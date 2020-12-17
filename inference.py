@@ -26,9 +26,10 @@ from keras.preprocessing.sequence import pad_sequences
 import warnings
 warnings.simplefilter("ignore")
 
+import en_core_web_sm
 
-
-nlp = spacy.load('en_core_web_sm')
+# nlp = spacy.load('en_core_web_sm')
+nlp = en_core_web_sm.load()
 
 # =============================================================================
 # Define functions

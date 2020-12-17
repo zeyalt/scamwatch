@@ -6,6 +6,7 @@ keras==2.3.1
 nltk==3.5
 matplotlib==3.3.2
 spacy==2.0.11
+https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-1.2.0/en_core_web_sm-1.2.0.tar.gz
 scikit-learn==0.23.2
 networkx==2.5
 tensorflow==1.14.0
