@@ -145,7 +145,7 @@ def generate_n_list(n_grams):
 df, best_model, df_to_display, corpus, tokenizer, scam_type_cat_mapping = import_all()
 
 # Load deep learning model
-best_dl_model = load_model("best-LSTM-fold-5.h5")
+best_dl_model = load_model("best-LSTM-fold-5.h5", compile=False)
 
 # =============================================================================
 # APP INTERFACE - SIDEBAR
