@@ -20,7 +20,7 @@ from sklearn.decomposition import PCA
 import re
 import math
 import ast
-import plotly.express as px
+# import plotly.express as px
 import networkx as nx
 from keras.models import load_model
 from keras.preprocessing.sequence import pad_sequences
@@ -79,19 +79,13 @@ def get_jaccard_sim(str1, str2):
     return float(len(c)) / (len(a) + len(b) - len(c) + 0.0001)
 
 
-# def find_similar_docs_cosine_jaccard(model, corpus, data, tag_id=None, new_doc=None, top_n=10):    
 def find_similar_docs_cosine_jaccard(model, corpus, data, tag_id=None, new_doc=None):    
     
     
     """This function takes a Doc2Vec model, corpus and tag ID or text string as inputs and 
     returns a dataframe with the most similar documents and their cosine and 
     Jaccard similarity scores."""
-
-#     if isinstance(top_n, int) == True:
-#         n = top_n
-#     elif isinstance(top_n, float) == True:
-#         n = round(top_n * len(model.docvecs))
-             
+            
     if tag_id is not None:
         infer_vector = model.infer_vector(corpus[tag_id].words)
         candidate_sentence = ' '.join(corpus[tag_id].words).replace('< ', '<').replace(' >', '>').replace(' ,', ',').replace(' .', '.')

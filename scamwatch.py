@@ -180,7 +180,7 @@ st.sidebar.info("National Crime Prevention Council, Singapore")
 # =============================================================================
 
 # Main title
-st.markdown("# ScamWatch")
+st.markdown("# ScamWatchhhhhhh")
 
 # Input
 st.markdown("### **Input**")
@@ -295,5 +295,5 @@ else:
         predictions_df = return_predictions(predicted_proba)
         c1, c2 = output3.beta_columns((2, 1))
         c1.dataframe(predictions_df)
-        c2.write("The scam you encountered is likely to beeeee")
+        c2.write("The scam you encountered is likely to be")
         c2.subheader(predicted_class)
