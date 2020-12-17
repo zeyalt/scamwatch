@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Dec  7 11:05:22 2020
-
-@author: Zeya
-"""
 
 # =============================================================================
 # IMPORT NECESSARY LIBRARIES
@@ -159,13 +153,13 @@ st.sidebar.markdown("2) Choose a similarity metric. Cosine similarity measures s
 st.sidebar.markdown("3) Select percentile of most similar scam reports to generate and analyse. For example, a percentile of 0.05 means the top 5% of most similar scam reports.")
 
 st.sidebar.markdown("Under the **Output** section, you will be able to:")
-st.sidebar.markdown("1) Find scam reports most similar to your scam story;")
+st.sidebar.markdown("1) Find scam reports from Scam Alert which are most similar to your story;")
 st.sidebar.markdown("2) Generate key words or phrases from these most similar scam reports; and")
 st.sidebar.markdown("3) Predict a scam type classification for your scam story. ")
 
 # About ScamWatch
 st.sidebar.header("About ScamWatch")
-st.sidebar.info("ScamWatch is an web application that aims to provide insights on scams in Singapore. It draws lessons from others’ scam experiences shared on [Scam Alert](https://scamalert.sg/stories). The underlying algorithms harness the hidden potential of free text in scam reports using machine learning and Natural Language Processing (NLP) methods.")
+st.sidebar.info("ScamWatch is an web application that harnesses the hidden potential of free text in scam reports from [Scam Alert](https://scamalert.sg/stories) using machine learning and Natural Language Processing methods. It is hoped that insights gained from others’ scam experiences will shed light on how scams typically unfold and hence the intervention measures that can be taken to disrupt scams.")
 
 # About me
 st.sidebar.header("About me")
@@ -180,7 +174,7 @@ st.sidebar.info("National Crime Prevention Council, Singapore")
 # =============================================================================
 
 # Main title
-st.markdown("# ScamWatchhhhhhh")
+st.markdown("# ScamWatch")
 
 # Input
 st.markdown("### **Input**")
@@ -193,7 +187,7 @@ x1 = find_similar_docs_cosine_jaccard(model=best_model, corpus=corpus, data=df, 
 x2 = x1[x1[sim_metric.lower()] >= x1[sim_metric.lower()].quantile(q)]
 x2 = x2.sort_values(by=sim_metric.lower(), ascending=False)
 x2.columns = ['Tag ID', 'Cosine', 'Jaccard', 'Scam Story', 'Preprocessed', 'Scam Type']
-x3 = x2[['Tag ID', sim_metric, 'Scam Story', 'Scam Type']]
+x3 = x2[['Tag ID', sim_metric, 'Scam Story', 'Scam Type']].reset_index().drop(columns=['index'])
 
 # =============================================================================
 # APP INTERFACE - OUTPUT
@@ -201,6 +195,7 @@ x3 = x2[['Tag ID', sim_metric, 'Scam Story', 'Scam Type']]
 
 # Output
 st.markdown("### **Output**")
+st.write("Expand the tabs below to view inference results.")
 
 # Output 1 - Finding Similar Scam Reports
 output1 = st.beta_expander("Finding Similar Scam Reports")
@@ -269,9 +264,9 @@ if text_input == "":
         
 else:
 
-    classification_mode = output3.selectbox("Select classification method", ["Doc2Vec model (Unsupervised)", "LSTM model (Supervised)"])
+    classification_mode = output3.selectbox("Select classification method", ["Using Doc2Vec model", "Using LSTM model"])
     
-    if classification_mode == "Doc2Vec model (Unsupervised)":
+    if classification_mode == "Using Doc2Vec model":
         
         c1 = Counter(x3['Scam Type'])
         c2 = [(i, round(c1[i] / len(x3), 3)) for i in c1]
@@ -284,16 +279,16 @@ else:
         
         predicted_class = d.reset_index()["Scam Type"][0]
         predicted_proba = d.reset_index()["Probability"][0]
-        c1, c2 = output3.beta_columns((2, 1))
-        c1.dataframe(d)
-        c2.write("Based on " + str(len(x3)) + " most similar scam reports, the scam you encountered is likely to be")
-        c2.subheader(predicted_class)
+        col1, col2 = output3.beta_columns((2, 1))
+        col1.dataframe(d)
+        col2.write("Based on the " + str(len(x3)) + " most similar scam reports, the scam you encountered is likely to be:")
+        col2.subheader(predicted_class)
            
     else:
         
         predicted_proba, predicted_class = predict_label(model=best_dl_model, text=text_input, tokenizer=tokenizer, label_to_idx=scam_type_cat_mapping)
         predictions_df = return_predictions(predicted_proba)
-        c1, c2 = output3.beta_columns((2, 1))
-        c1.dataframe(predictions_df)
-        c2.write("The scam you encountered is likely to be")
-        c2.subheader(predicted_class)
+        col1, col2 = output3.beta_columns((2, 1))
+        col1.dataframe(predictions_df)
+        col2.write("The scam you encountered is likely to be:")
+        col2.subheader(predicted_class)
